@@ -1,4 +1,4 @@
-function TaskList({task}) {
+function TaskList({tasks}) {
     return ( 
         <>
         <div class="overflow-auto">
@@ -30,7 +30,7 @@ function TaskList({task}) {
                 </thead>
                 <tbody>
                   {
-                    task.map((t) => {
+                    tasks.map((t) => {
                         return (
                           <tr class="border-b border-[#2E3443] [&>td]:align-baseline [&>td]:px-4 [&>td]:py-2">
                     <td>
