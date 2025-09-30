@@ -1,20 +1,30 @@
-function Search() {
+import { useState } from "react";
+function Search({onSearch}) {
+    const [searchTerm, setSearchTerm] = useState("")
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        const value = e.target.value;
+        setSearchTerm(value);
+        onSearch(value); 
+    }
+
     return ( 
         <>
         {/* <!-- Search Box --> */}
-          <div class="p-2 flex justify-end">
-            <form>
-              <div class="flex">
-                <div class="relative overflow-hidden rounded-lg text-gray-50 md:min-w-[380px] lg:min-w-[440px]">
+          <div className="p-2 flex justify-end">
+            <form onSubmit={(e) => e.preventDefault()}>
+              <div className="flex">
+                <div className="relative overflow-hidden rounded-lg text-gray-50 md:min-w-[380px] lg:min-w-[440px]">
                   <input
                     type="search"
                     id="search-dropdown"
-                    class="z-20 block w-full bg-gray-800 px-4 py-2 pr-10 focus:outline-none"
+                    className="z-20 block w-full bg-gray-800 px-4 py-2 pr-10 focus:outline-none"
                     placeholder="Search Task"
-                    required
+                    value={searchTerm}
+                    onChange={handleSearch}
                   />
                   <button
-                    type="submit"
                     class="absolute right-2 top-0 h-full rounded-e-lg text-white md:right-4"
                   >
                     <svg

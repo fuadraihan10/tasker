@@ -3,6 +3,8 @@ import Search from "./Search";
 import TaskActions from "./TaskAction"
 import TaskList from "./TaskList"
 import AddTaskMordal from "./addTaskMordal"
+import Fuse from "fuse.js";
+import NoTaskFound from "./NoTaskFound";
 
 function Task() {
   const defaultTask = {
@@ -16,6 +18,7 @@ function Task() {
   const [tasks , setTasks] = useState([defaultTask])
   const [showAddMordal , setshowAddMordal] = useState(false)
   const [taskToUpdate , setTaskToUpdate] = useState(null)
+  const [backuptasks , setBackupTask] = useState([])
 
   function handleAddTask(task){
     setTasks([...tasks , task])
@@ -31,6 +34,7 @@ function Task() {
 
     setshowAddMordal(false);
     setTasks(editdTask)
+    setBackupTask(editdTask)
     setTaskToUpdate(null)
   }
 
@@ -44,6 +48,7 @@ function Task() {
         }})
         
     setTasks(editdTask)
+    setBackupTask(editdTask)
   }
 
   function onClose(){
@@ -56,8 +61,34 @@ function Task() {
     const newTasks =[...tasks]
     newTasks[index].isFev = !newTasks[index].isFev
     setTasks(newTasks)
+    setBackupTask(newTasks)
     console.log(tasks[index].isFev)
   }
+
+
+
+  function onSearch(searchTerm) {
+    const term = searchTerm.trim();
+    if (!term) {
+      setTasks(backuptasks.length ? backuptasks : tasks);
+      return;
+    }
+    if (!backuptasks.length) {
+      setBackupTask(tasks);
+    }
+
+    const fuse = new Fuse(backuptasks.length ? backuptasks : tasks, {
+      keys: ["title", "description", "tags", "priority"],
+      threshold: 0.34, 
+      ignoreLocation: true,
+    });
+
+    const results = fuse.search(term);
+    const filtered = results.map(result => result.item);
+
+    setTasks(filtered);
+}
+
 
  
   return (
@@ -65,10 +96,15 @@ function Task() {
       <section class="mb-20" id="tasks">
       {showAddMordal && <AddTaskMordal onClose={onClose} onSave={handleAddTask} onEdit={handleEditTask} taskToUpdate={taskToUpdate}/>}
         <div class="container mx-auto">
-          <Search />
+          <Search onSearch={onSearch}/>
           <div class="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
-            <TaskActions handleAllDeleteTask={() =>{setTasks([])}} handleAddTask={() => {setshowAddMordal(true)}}/>
-            <TaskList tasks={tasks} onFev={onFev} onDelete={onDelete} onEdit={(task) => {setTaskToUpdate(task);setshowAddMordal(true)}}/>
+            <TaskActions handleAllDeleteTask={() =>{setTasks([]); setBackupTask([])}} handleAddTask={() => {setshowAddMordal(true)}}/>
+            {
+              tasks.length > 0 ?
+              (<TaskList tasks={tasks} onFev={onFev} onDelete={onDelete} onEdit={(task) => {setTaskToUpdate(task);setshowAddMordal(true)}}/>)
+              : (<NoTaskFound />)
+            }
+            
           </div>
         </div>
       </section>

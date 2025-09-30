@@ -1,5 +1,6 @@
 
 function TaskSearch({handleAddTask , handleAllDeleteTask}) {
+
     return ( 
         <>
             <div class="mb-14 items-center justify-between sm:flex">

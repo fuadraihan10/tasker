@@ -11,6 +11,7 @@ function AddTaskMordal({onSave , taskToUpdate, onEdit , onClose}) {
             "isfev" : false
         }
     )
+    const [errors, setErrors] = useState({});
 
     function handleChange(evt){
       const name = evt.target.name
@@ -51,7 +52,7 @@ function AddTaskMordal({onSave , taskToUpdate, onEdit , onClose}) {
       <div className="space-y-9 text-white lg:space-y-10">
         {/* <!-- title --> */}
         <div className="space-y-2 lg:space-y-3">
-          <label for="title">Title</label>
+          <label htmlFor="title">Title</label>
           <input
             className="block w-full rounded-md bg-[#2D323F] px-3 py-2.5"
             type="text"
@@ -61,6 +62,7 @@ function AddTaskMordal({onSave , taskToUpdate, onEdit , onClose}) {
             onChange={handleChange}
             required
           />
+          {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
         </div>
         {/* <!-- description --> */}
         <div className="space-y-2 lg:space-y-3">
@@ -74,6 +76,7 @@ function AddTaskMordal({onSave , taskToUpdate, onEdit , onClose}) {
             onChange={handleChange}
             required
           ></textarea>
+          {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
         </div>
         {/* <!-- input group --> */}
         <div
@@ -81,26 +84,27 @@ function AddTaskMordal({onSave , taskToUpdate, onEdit , onClose}) {
         >
           {/* <!-- tags --> */}
           <div className="space-y-2 lg:space-y-3">
-            <label for="tags">Tags</label>
+            <label htmlFor="tags">Tags</label>
             <input
               className="block w-full rounded-md bg-[#2D323F] px-3 py-2.5"
               type="text"
               name="tags"
               id="tags"
               value={task.tags}
-            onChange={handleChange}
+              onChange={handleChange}
               required
             />
+            {errors.tags && <p className="text-red-500 text-sm mt-1">{errors.tags}</p>}
           </div>
           {/* <!-- priority --> */}
           <div className="space-y-2 lg:space-y-3">
-            <label for="priority">Priority</label>
+            <label htmlFor="priority">Priority</label>
             <select
               className="block w-full cursor-pointer rounded-md bg-[#2D323F] px-3 py-2.5"
               name="priority"
               id="priority"
               value={task.priority}
-            onChange={handleChange}
+              onChange={handleChange}
               required
             >
               <option value="">Select Priority</option>
@@ -117,12 +121,24 @@ function AddTaskMordal({onSave , taskToUpdate, onEdit , onClose}) {
           type="submit"
           className="rounded bg-blue-600 px-4 py-2 text-white transition-all hover:opacity-80"
           onClick={(e) => {e.preventDefault()
+            let newErrors = {};
+              if (!task.title) newErrors.title = "Title is required";
+              if (!task.description) newErrors.description = "Description is required";
+              if (!task.priority) newErrors.priority = "Priority is required";
+              if (!task.tags || task.tags.length === 0) newErrors.tags = "Tags are required"
+
+              if (Object.keys(newErrors).length > 0) {
+                setErrors(newErrors);
+                return; // stop submission
+              }
 
             if(taskToUpdate && true){
               onEdit(task)
               return
             }
-             onSave(task)}}
+             onSave(task)
+             setErrors({})
+            }}
         >
           save
         </button>
