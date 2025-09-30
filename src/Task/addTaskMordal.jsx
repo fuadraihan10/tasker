@@ -1,8 +1,7 @@
 import { useState } from "react";
-import Task from "./Task";
 
-function AddTaskMordal({onSave}) {
-    const [task,setTask] = useState(
+function AddTaskMordal({onSave , taskToUpdate, onEdit}) {
+    const [task,setTask] = useState( taskToUpdate || 
                 {
             "id" :  crypto.randomUUID(),
             "title" : "",
@@ -35,7 +34,7 @@ function AddTaskMordal({onSave}) {
       <h2
         className="mb-9 text-center text-2xl font-bold text-white lg:mb-11 lg:text-[28px]"
       >
-        Add New Task
+        {taskToUpdate ? "Edit Task" : "Add New Task"}
       </h2>
 
       {/* <!-- inputs --> */}
@@ -108,6 +107,11 @@ function AddTaskMordal({onSave}) {
           type="submit"
           className="rounded bg-blue-600 px-4 py-2 text-white transition-all hover:opacity-80"
           onClick={(e) => {e.preventDefault()
+
+            if(taskToUpdate && true){
+              onEdit(task)
+              return
+            }
              onSave(task)}}
         >
           Create new Task

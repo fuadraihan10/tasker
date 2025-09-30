@@ -1,4 +1,4 @@
-function TaskList({tasks}) {
+function TaskList({tasks , onEdit , onDelete}) {
     return ( 
         <>
         <div class="overflow-auto">
@@ -71,8 +71,8 @@ function TaskList({tasks}) {
                     <td class="text-center">{t.priority}</td>
                     <td>
                       <div class="flex items-center justify-center space-x-3">
-                        <button class="text-red-500">Delete</button>
-                        <button class="text-blue-500">Edit</button>
+                        <button class="text-red-500" onClick={(e) => {e.preventDefault ;onDelete(t)}}>Delete</button>
+                        <button class="text-blue-500" onClick={(e) => {e.preventDefault ;onEdit(t)}}>Edit</button>
                       </div>
                     </td>
                   </tr>

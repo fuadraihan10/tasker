@@ -1,5 +1,5 @@
 
-function TaskSearch({handleAddTask}) {
+function TaskSearch({handleAddTask , handleAllDeleteTask}) {
     return ( 
         <>
             <div class="mb-14 items-center justify-between sm:flex">
@@ -8,7 +8,7 @@ function TaskSearch({handleAddTask}) {
                 <button onClick={handleAddTask} class="rounded-md bg-blue-500 px-3.5 py-2.5 text-sm font-semibold">
                   Add Task
                 </button>
-                <button class="rounded-md bg-red-500 px-3.5 py-2.5 text-sm font-semibold">
+                <button onClick={handleAllDeleteTask} class="rounded-md bg-red-500 px-3.5 py-2.5 text-sm font-semibold">
                   Delete All
                 </button>
               </div>
