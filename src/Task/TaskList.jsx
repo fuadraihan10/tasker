@@ -1,4 +1,4 @@
-function TaskList({tasks , onEdit , onDelete}) {
+function TaskList({tasks , onEdit , onDelete,onFev}) {
     return ( 
         <>
         <div class="overflow-auto">
@@ -35,14 +35,15 @@ function TaskList({tasks , onEdit , onDelete}) {
                           <tr class="border-b border-[#2E3443] [&>td]:align-baseline [&>td]:px-4 [&>td]:py-2">
                     <td>
                       <svg
+                        onClick={() => {onFev(t.id)}}
                         xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-star"
+                        className="icon icon-tabler icon-tabler-star"
                         width="24"
                         height="24"
                         viewBox="0 0 24 24"
                         stroke-width="2"
                         stroke="yellow"
-                        fill={t.isFev ? "yellow" :  "gray"}
+                        fill={t.isFev ? "yellow" : "transparent"}
                         stroke-linecap="round"
                         stroke-linejoin="round"
                       >
@@ -71,8 +72,8 @@ function TaskList({tasks , onEdit , onDelete}) {
                     <td class="text-center">{t.priority}</td>
                     <td>
                       <div class="flex items-center justify-center space-x-3">
-                        <button class="text-red-500" onClick={(e) => {e.preventDefault ;onDelete(t)}}>Delete</button>
-                        <button class="text-blue-500" onClick={(e) => {e.preventDefault ;onEdit(t)}}>Edit</button>
+                        <button class="text-red-500" onClick={(e) => {e.preventDefault() ;onDelete(t)}}>Delete</button>
+                        <button class="text-blue-500" onClick={(e) => {e.preventDefault() ;onEdit(t)}}>Edit</button>
                       </div>
                     </td>
                   </tr>
